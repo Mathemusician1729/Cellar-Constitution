@@ -1,6 +1,7 @@
 # emacs autosaves
 .\#*
 *~
+#\#*\#
 
 # VSCode
 .vscode/**
