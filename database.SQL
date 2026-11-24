@@ -1,9 +1,11 @@
 CREATE DATABASE cellar_constitution_db;
 
+USE cellar_constitution_db;
+
 CREATE TABLE contact (
-    email VARCHAR(50),
+    email VARCHAR(50) UNIQUE,
     phone_number VARCHAR(20),
-    name VARCHAR(50),
+    `name` VARCHAR(50),
     address VARCHAR(50),
     email_opt_out BOOLEAN
 );
@@ -11,15 +13,9 @@ CREATE TABLE contact (
 CREATE TABLE internal_contact (
     internal_id INT NOT NULL PRIMARY KEY,
     email VARCHAR(50),
-    phone_number VARCHAR(20),
-    name VARCHAR(50),
-    address VARCHAR(50),
     sha256sum VARCHAR(64),
     salt VARCHAR(32),
-    FOREIGN KEY (email) REFERENCES contact(email),
-    FOREIGN KEY (phone_number) REFERENCES contact(phone_number),
-    FOREIGN KEY (name) REFERENCES contact(name),
-    FOREIGN KEY (address) REFERENCES contact(address)
+    FOREIGN KEY (email) REFERENCES contact (email)
 );
 
 CREATE TABLE volunteer_task (
@@ -28,15 +24,21 @@ CREATE TABLE volunteer_task (
 
 CREATE TABLE volunteer_shift (
     task_name VARCHAR(50) NOT NULL,
-    manager_id INT NOT NULL,
+    manager_id INT,
     date DATE NOT NULL,
     start_timestamp TIME NOT NULL,
     end_timestamp TIME NOT NULL,
     location VARCHAR(50) NOT NULL,
-    PRIMARY KEY (task_name, manager_id, date, start_timestamp, end_timestamp, location),
+    PRIMARY KEY (task_name, date, start_timestamp, end_timestamp, location),
     FOREIGN KEY (task_name) REFERENCES volunteer_task(task_name),
     FOREIGN KEY (manager_id) REFERENCES internal_contact(internal_id)
 );
+
+CREATE TABLE staff (
+    internal_id INT NOT NULL PRIMARY KEY,
+    salary DECIMAL(10, 2) NOT NULL,
+    FOREIGN KEY (internal_id) REFERENCES internal_contact(internal_id)
+    );
 
 CREATE TABLE volunteer (
     internal_id INT NOT NULL PRIMARY KEY,
@@ -46,11 +48,6 @@ CREATE TABLE volunteer (
     FOREIGN KEY (supervisor_id) REFERENCES staff(internal_id)
 );
 
-CREATE TABLE staff (
-    internal_id INT NOT NULL PRIMARY KEY,
-    salary DECIMAL(10, 2) NOT NULL,
-    FOREIGN KEY (internal_id) REFERENCES internal_contact(internal_id)
-);
 
 CREATE TABLE admin (
     internal_id INT NOT NULL PRIMARY KEY,
@@ -65,24 +62,16 @@ CREATE TABLE scheduled_for (
     end_timestamp TIME NOT NULL,
     location VARCHAR(50) NOT NULL,
     PRIMARY KEY (v_id, task_name, date, start_timestamp, end_timestamp, location),
-    FOREIGN KEY (v_id) REFERENCES volunteer(internal_id),
-    FOREIGN KEY (task_name) REFERENCES volunteer_task(task_name),
-    FOREIGN KEY (date) REFERENCES volunteer_shift(date),
-    FOREIGN KEY (start_timestamp) REFERENCES volunteer_shift(start_timestamp),
-    FOREIGN KEY (end_timestamp) REFERENCES volunteer_shift(end_timestamp),
-    FOREIGN KEY (location) REFERENCES volunteer_shift(location)
+    FOREIGN KEY (task_name, date, start_timestamp, end_timestamp, location) REFERENCES volunteer_shift(task_name, date, start_timestamp, end_timestamp, location)
 );
 
 CREATE TABLE external_contact (
     external_id INT NOT NULL PRIMARY KEY,
     email VARCHAR(50),
     phone_number VARCHAR(20),
-    name VARCHAR(50),
+    `name` VARCHAR(50),
     address VARCHAR(50),
-    FOREIGN KEY (email) REFERENCES contact(email),
-    FOREIGN KEY (phone_number) REFERENCES contact(phone_number),
-    FOREIGN KEY (name) REFERENCES contact(name),
-    FOREIGN KEY (address) REFERENCES contact(address)
+    FOREIGN KEY (email) REFERENCES contact(email)
 );
 
 CREATE TABLE external_org (
@@ -102,6 +91,11 @@ CREATE TABLE supplier (
     FOREIGN KEY (supplier_id) REFERENCES external_contact(external_id)
 );
 
+CREATE TABLE donor (
+    donor_id INT NOT NULL PRIMARY KEY,
+    FOREIGN KEY (donor_id) REFERENCES external_contact(external_id)
+    );
+
 CREATE TABLE monetary_donation (
     timestamp TIMESTAMP NOT NULL,
     amount DECIMAL(10, 2) NOT NULL,
@@ -110,10 +104,6 @@ CREATE TABLE monetary_donation (
     FOREIGN KEY (donor_id) REFERENCES donor(donor_id)
 );
 
-CREATE TABLE donor (
-    donor_id INT NOT NULL PRIMARY KEY,
-    FOREIGN KEY (donor_id) REFERENCES external_contact(external_id)
-);
 
 CREATE TABLE ext_id_surrogate_key (
     external_id INT NOT NULL PRIMARY KEY, 
@@ -168,8 +158,7 @@ CREATE TABLE item_purchased (
     price DECIMAL(10, 2) NOT NULL,
     date_purchased DATE NOT NULL,
     PRIMARY KEY (seller_id, batch_id),
-    FOREIGN KEY (seller_id) REFERENCES seller(seller_id),
-    FOREIGN KEY (batch_id) REFERENCES stored_item(batch_id)
+    FOREIGN KEY (seller_id) REFERENCES seller(seller_id)
 );
 
 CREATE TABLE item_donated (
@@ -177,8 +166,7 @@ CREATE TABLE item_donated (
     batch_id INT NOT NULL,
     date_donated DATE NOT NULL,
     PRIMARY KEY (donor_id, batch_id),
-    FOREIGN KEY (donor_id) REFERENCES item_donor(donor_id),
-    FOREIGN KEY (batch_id) REFERENCES stored_item(batch_id)
+    FOREIGN KEY (donor_id) REFERENCES item_donor(donor_id)
 );
 
 CREATE TABLE storage_type (
@@ -189,20 +177,16 @@ CREATE TABLE storage_type (
 CREATE TABLE storage (
     storage_name VARCHAR(50) NOT NULL PRIMARY KEY,
     type_name VARCHAR(50) NOT NULL,
-    temperature DECIMAL(5, 2) NOT NULL,
     capacity INT NOT NULL,
     location VARCHAR(50),
-    FOREIGN KEY (type_name) REFERENCES storage_type(type_name),
-    FOREIGN KEY (temperature) REFERENCES storage_type(temperature)
+    FOREIGN KEY (type_name) REFERENCES storage_type(type_name)
 );
 
 CREATE TABLE stores (
     storage_name VARCHAR(50) NOT NULL,
     batch_id INT NOT NULL,
     quantity INT NOT NULL,
-    PRIMARY KEY (storage_name, batch_id),
-    FOREIGN KEY (storage_name) REFERENCES storage(storage_type_name),
-    FOREIGN KEY (batch_id) REFERENCES stored_item(batch_id)
+    PRIMARY KEY (storage_name, batch_id)
 );
 
 CREATE TABLE item_type (
@@ -247,18 +231,26 @@ CREATE TABLE stored_item (
     quantity INT NOT NULL,
     date_received DATE NOT NULL,
     FOREIGN KEY (item_type_name) REFERENCES item_type(type_name)
-);
+    );
+
+ALTER TABLE item_purchased
+ADD CONSTRAINT fk_batch_id
+FOREIGN KEY (batch_id) REFERENCES stored_item(batch_id);
+
+ALTER TABLE item_donated
+ADD CONSTRAINT fk_batch_id
+FOREIGN KEY (batch_id) REFERENCES stored_item(batch_id);
+
+ALTER TABLE stores
+ADD CONSTRAINT fk_batch_id
+FOREIGN KEY (batch_id) REFERENCES stored_item(batch_id);
 
 CREATE TABLE stored_food_item (
     batch_id INT NOT NULL PRIMARY KEY,
     item_type_name VARCHAR(50) NOT NULL,
-    quantity INT NOT NULL,
-    date_recieved DATE NOT NULL,
     expiration_date DATE NOT NULL,
     FOREIGN KEY (batch_id) REFERENCES stored_item(batch_id),
-    FOREIGN KEY (item_type_name) REFERENCES stored_item(item_type_name),
-    FOREIGN KEY (quantity) REFERENCES stored_item(quantity),
-    FOREIGN KEY (date_recieved) REFERENCES stored_item(date_received)
+    FOREIGN KEY (item_type_name) REFERENCES stored_item(item_type_name)
 );
 
 CREATE TABLE inventory_deduction (
@@ -274,8 +266,7 @@ CREATE TABLE discarded_item (
     quantity INT NOT NULL,
     reason VARCHAR(100) NOT NULL,
     PRIMARY KEY (batch_id, quantity),
-    FOREIGN KEY (batch_id) REFERENCES inventory_deduction(batch_id),
-    FOREIGN KEY (quantity) REFERENCES inventory_deduction(quantity)
+    FOREIGN KEY (batch_id, quantity) REFERENCES inventory_deduction(batch_id, quantity)
 );
 
 CREATE TABLE distributed_item (
@@ -283,15 +274,15 @@ CREATE TABLE distributed_item (
     quantity INT NOT NULL,
     external_id INT NOT NULL,
     PRIMARY KEY (batch_id, quantity), 
-    FOREIGN KEY (batch_id) REFERENCES inventory_deduction(batch_id),
-    FOREIGN KEY (quantity) REFERENCES inventory_deduction(quantity),
+    FOREIGN KEY (batch_id, quantity) REFERENCES inventory_deduction(batch_id, quantity),
     FOREIGN KEY (external_id) REFERENCES external_org(org_id)
 );
 
 CREATE TABLE used_in (
     batch_id INT NOT NULL,
+    quantity INT NOT NULL,
     recipe_name VARCHAR(50) NOT NULL,
-    PRIMARY KEY (batch_id, recipe_name),
-    FOREIGN KEY (batch_id) REFERENCES inventory_deduction(batch_id),
+    PRIMARY KEY (batch_id, quantity, recipe_name),
+    FOREIGN KEY (batch_id, quantity) REFERENCES inventory_deduction(batch_id, quantity),
     FOREIGN KEY (recipe_name) REFERENCES recipe(item_type_name)
 );
