@@ -171,7 +171,7 @@ CREATE TABLE item_donated (
 
 CREATE TABLE storage_type (
     type_name VARCHAR(50) NOT NULL PRIMARY KEY,
-    temperature DECIMAL(5, 2) NOT NULL
+    temperature INT
 );
 
 CREATE TABLE storage (
@@ -193,7 +193,7 @@ CREATE TABLE item_type (
     type_name VARCHAR(50) NOT NULL PRIMARY KEY,
     unit_quantity VARCHAR(20) NOT NULL,
     perishable BOOLEAN NOT NULL,
-    storage_type_name VARCHAR(50) NOT NULL,
+    storage_type_name VARCHAR(50),
     FOREIGN KEY (storage_type_name) REFERENCES storage_type(type_name)
 );
 
@@ -229,7 +229,7 @@ CREATE TABLE stored_item (
     batch_id INT NOT NULL PRIMARY KEY,
     item_type_name VARCHAR(50) NOT NULL,
     quantity INT NOT NULL,
-    date_received DATE NOT NULL,
+    date_received DATE,
     FOREIGN KEY (item_type_name) REFERENCES item_type(type_name)
     );
 
