@@ -11,7 +11,7 @@ const LoginPage = () =>  {
 
     const handleSubmit = (e) => {
         e.preventDefault()
-        console.log(role, username, password, keepSignin)
+        console.log(role, username, password, keepSignin, showpassword)
     }
 
     return (
