@@ -5,7 +5,10 @@ import axios from "axios";
 
 const Home = () => {
     return( 
-	  <div>Home</div>
+	  <div>
+        <title>Home</title>
+        <h1>HOMEPAGE DASHBOARD</h1>
+      </div>
     )
 }
 
