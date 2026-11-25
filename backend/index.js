@@ -67,23 +67,22 @@ app.delete("/ItemTypes/:type_name", (req, res)=>{
     })
 })
 
-// // edit item type
-// app.put("/item_types/:type_name", (req, res)=>{
-//     const type_name = req.params.id;
-//     const q =  "UPDATE item_type SET `type_name` = ?, `unit_quantity`=?, `perishable`=?, `storage_type_name`=? WHERE id= ?";
+// edit item type
+app.put("/ItemTypes/:type_name", (req, res)=>{
+    const type_name = req.params.type_name;
+    const q =  "UPDATE item_type SET `unit_quantity`=?, `perishable`=?, `storage_type_name`=? WHERE type_name = ?";
 
-//     const values=[
-// 	req.body.title,
-// 	req.body.desc,
-// 	req.body.price,
-// 	req.body.cover
-//     ]
+    const values=[
+	req.body.unit_quantity,
+	(req.body.perishable == "on") ? true : false,
+	(req.body.storage_type_name == "") ? null : req.body.storage_type_name
+    ]
 
-//     db.query(q,[...values,bookId], (err,data)=>{
-// 	if(err) return res.json(err)
-// 	return res.json("Item Type updated successfully.")
-//     })
-// })
+    db.query(q,[...values,type_name], (err,data)=>{
+	if(err) return res.json(err)
+	return res.json("Item Type updated successfully.")
+    })
+})
 
 // display admin calendar
 // add volunteer shift
