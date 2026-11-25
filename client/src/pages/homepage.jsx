@@ -5,6 +5,7 @@ import {Link} from 'react-router-dom'
 const Homepage = () =>  {
     return (
         <div className='home'>
+            <title>Cellar Constitution</title>
             <h1>Welcome to Cellar Constitution</h1>
             <h2>All your needs all in one place! (replace with a way better hook)</h2>
             <h3>Administrator</h3>
