@@ -6,7 +6,7 @@ import axios from "axios";
 const Home = () => {
     return( 
 	  <div>
-        <title>Home</title>
+        <title>Home | Cellar Constitution</title>
         <h1>HOMEPAGE DASHBOARD</h1>
       </div>
     )

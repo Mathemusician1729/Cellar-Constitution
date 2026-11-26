@@ -1,12 +1,13 @@
 
 import React from 'react';
-import { useState } from "react";
-import { useNavigate } from "react-router-dom";
-import axios from "axios";
 
 const Calendar = () => {
     return (
-	  <div>Calendar</div>
+	  <div>
+        <title>Calendar | Cellar Constitution</title>
+        <h1>Calendar</h1>
+        <p>insert calendar here</p>
+      </div>
     )   
 }
 
