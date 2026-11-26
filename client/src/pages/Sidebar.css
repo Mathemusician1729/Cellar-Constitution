@@ -1,0 +1,31 @@
+.nav {
+    height: 60px;
+    background-color: black;
+    display: flex;
+    justify-content: space-between;
+    padding: 0px 20px;
+    color: white;
+}
+
+.nav h2 {
+    cursor: pointer;
+}
+
+.nav ul {
+    list-style-type: none;
+    display: flex;
+    align-items: center;
+    gap: 20px;
+}
+
+.nav ul li {
+    cursor: pointer;
+}
+
+.nav-option {
+    display: flex;
+    align-items: center;
+    padding: 0px 20px;
+    gap: 10px;
+}
+

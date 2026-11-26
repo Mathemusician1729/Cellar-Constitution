@@ -14,6 +14,7 @@ import HomeLayout from "./pages/HomeLayout"
 import AddItemType from "./pages/AddItemType";
 import ItemTypes from "./pages/ItemTypes";
 import Login from "./pages/Login"
+import Sidebar from "./pages/Sidebar";
 import "./style.css"
 
 
@@ -24,8 +25,9 @@ function App() {
         <Routes>
           <Route path="/" element={<Homepage/>}/>
           <Route path="/login/:role" element={<Login/>}/>
+          <Route path ='/sidebar_test' element={<Sidebar/>}/>
           <Route path="/home" element={<HomeLayout/>}/>
-	        <Route path="/Inventory" element={<Inventory/>}/> 
+	        {/* <Route path="/Inventory" element={<Inventory/>}/>  */}
           <Route path="/AddItem/" element={<AddItem/>}/>
           <Route path="/AddItemType" element={<AddItemType/>}/>
           <Route path="/ItemTypes" element={<ItemTypes/>}/>
