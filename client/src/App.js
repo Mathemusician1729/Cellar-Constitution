@@ -24,7 +24,7 @@ function App() {
         <Routes>
           <Route path="/" element={<Homepage/>}/>
           <Route path="/login/:role" element={<Login/>}/>
-          <Route path="/home" element={<HomeLayout/>}>
+          <Route path="/home" element={<HomeLayout/>}> {/* Put dashboard links under this line */}
             <Route index element={<Home/>}/>
             <Route path='calendar' element={<Calendar/>}/>
           </Route>

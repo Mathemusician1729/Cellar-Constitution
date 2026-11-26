@@ -19,25 +19,25 @@ function Sidebar() {
                     <h3>Calendar</h3>
                 </NavLink>
 
-                <div className="nav-option">
+                <NavLink to='/home/contact' className="nav-option">
                     <i className="bi bi-person"></i>
                     <h3>Contact</h3>
-                </div>
+                </NavLink>
 
-                <div className="nav-option">
+                <NavLink to='/home/inventory' className="nav-option">
                     <i className="bi bi-fork-knife"></i>
                     <h3>Inventory</h3>
-                </div>
+                </NavLink>
 
                 <div className="nav-option">
                     <i className="bi bi-bank2"></i>
                     <h3>Donations</h3>
                 </div>
 
-                <div className="nav-option">
+                <NavLink to='/' className="nav-option">
                     <i className="bi bi-arrow-bar-left"></i>
                     <h3>Log Out</h3>
-                </div>
+                </NavLink>
             </div>
         </div>
     )

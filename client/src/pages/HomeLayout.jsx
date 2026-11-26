@@ -1,6 +1,5 @@
 import React from 'react';
-import { NavLink, Outlet } from "react-router-dom";
-import axios from "axios";
+import {Outlet} from "react-router-dom";
 import Sidebar from './Sidebar'
 
 function HomeLayout() {
