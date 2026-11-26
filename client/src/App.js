@@ -12,6 +12,7 @@ import Home from "./pages/Home";
 import Homepage from "./pages/homepage";
 import HomeLayout from "./pages/HomeLayout"
 import AddItemType from "./pages/AddItemType";
+import EditItemType from "./pages/EditItemType";
 import ItemTypes from "./pages/ItemTypes";
 import Login from "./pages/Login"
 import "./style.css"
@@ -23,7 +24,6 @@ function App() {
       <BrowserRouter> 
         <Routes>
           <Route path="/" element={<Homepage/>}/>
-          <Route path="/login/:role" element={<LoginPage/>}/>
 	        <Route path="/AddItem/" element={<AddItem/>}/>
 	        <Route path="/AddItemType" element={<AddItemType/>}/>
 	        <Route path="/EditItemType/:type_name" element={<EditItemType/>}/>
