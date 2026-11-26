@@ -3,8 +3,7 @@ import AddContact from "./pages/AddContact";
 import AddDeduction from "./pages/AddDeduction";
 import AddItem from "./pages/AddItem";
 import Calendar from "./pages/Calendar";
-import ContactsListAll from "./pages/ContactsListAll";
-import ContactsListInternal from "./pages/ContactsListInternal";
+import ContactPage from "./pages/ContactPage";
 import Dedutions from "./pages/Deductions";
 import DonationLog from "./pages/DonationLog";
 import Inventory from "./pages/Inventory";
@@ -32,7 +31,8 @@ function App() {
           <Route path="/home" element={<HomeLayout/>}> {/* Put dashboard links under this line, make sure routes are the same as routes in Sidebar.jsx */}
             <Route index element={<Home/>}/>
             <Route path='calendar' element={<Calendar/>}/>
-            <Route path='contacts' element={<ContactsListAll/>}/>
+            <Route path='contact' element={<ContactPage/>}/>
+            <Route path='contact/:type' element={<ContactPage/>}/>
             <Route path='donations' element={<DonationLog/>}/>
           </Route>
 	        {/* <Route path="/Inventory" element={<Inventory/>}/>  */}

@@ -29,7 +29,7 @@ function Sidebar() {
                     <NavLink to='/home/contact' className='nav-option'>
                         <i className="bi bi-person"></i>
                         <h3>Contacts</h3>
-                        <i className={`bi ${contactsDropDown ? 'bi-chevron-up' : 'bi-chevron-down'}`} ></i>
+                        <i className={`bi ${contactsDropDown ? 'bi-chevron-up' : 'bi-chevron-down'}`} onClick={(e) => {setcontactsDropDown((prev) => !prev)}}></i>
                     </NavLink>
                 </div>
 

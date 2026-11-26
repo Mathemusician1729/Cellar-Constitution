@@ -5,7 +5,14 @@ import axios from "axios";
 
 const ContactsListInternal = () => {
     return (
-	   <div>ContactsListInternal</div>
+       <div>
+            <h2>Externals</h2>
+            <ul>
+                <li>McDonalds</li>
+                <li>Walmart</li>
+                <li>Food for Good</li>
+            </ul>
+        </div>
     )
 }
 
