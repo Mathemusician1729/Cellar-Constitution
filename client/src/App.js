@@ -8,12 +8,14 @@ import ContactsListInternal from "./pages/ContactsListInternal";
 import Dedutions from "./pages/Deductions";
 import DonationLog from "./pages/DonationLog";
 import Inventory from "./pages/Inventory";
-import Homepage from "./pages/Home.jsx";
+import Home from "./pages/Home"; 
+import Homepage from "./pages/homepage";
+import HomeLayout from "./pages/HomeLayout"
 import AddItemType from "./pages/AddItemType";
 import ItemTypes from "./pages/ItemTypes";
-import LoginPage from "./pages/Login.jsx";
-import EditItemType from "./pages/EditItemType.jsx"
+import Login from "./pages/Login"
 import "./style.css"
+
 
 function App() {
   return ( // allow for page to update based on path
@@ -22,11 +24,16 @@ function App() {
         <Routes>
           <Route path="/" element={<Homepage/>}/>
           <Route path="/login/:role" element={<LoginPage/>}/>
-	  <Route path="/Inventory" element={<Inventory/>}/>
-	    <Route path="/AddItem/" element={<AddItem/>}/>
-	  <Route path="/AddItemType" element={<AddItemType/>}/>
-	  <Route path="/EditItemType/:type_name" element={<EditItemType/>}/>
-	    <Route path="/ItemTypes" element={<ItemTypes/>}/>
+	        <Route path="/AddItem/" element={<AddItem/>}/>
+	        <Route path="/AddItemType" element={<AddItemType/>}/>
+	        <Route path="/EditItemType/:type_name" element={<EditItemType/>}/>
+	        <Route path="/ItemTypes" element={<ItemTypes/>}/>
+          <Route path="/login/:role" element={<Login/>}/>
+          <Route path="/home" element={<HomeLayout/>}> {/* Put dashboard links under this line */}
+            <Route index element={<Home/>}/>
+            <Route path='calendar' element={<Calendar/>}/>
+          </Route>
+	        {/* <Route path="/Inventory" element={<Inventory/>}/>  */}
         </Routes>
       </BrowserRouter>
     </div>

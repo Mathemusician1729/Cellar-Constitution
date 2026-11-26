@@ -1,6 +1,6 @@
 // LoginPage component
 import React, {useState} from 'react'
-import {useParams, Link} from 'react-router-dom'
+import {useParams, useNavigate, Link} from 'react-router-dom'
 
 const LoginPage = () =>  {
     const {role} = useParams() // get role (admin, staff, volunteer) from the link
@@ -8,10 +8,12 @@ const LoginPage = () =>  {
     const [password, setPassword] = useState('')
     const [keepSignin, setkeepSignin] = useState(false)
     const [showpassword, setshowpassword] = useState(false)
+    const navigate = useNavigate()
 
     const handleSubmit = (e) => {
         e.preventDefault()
-        console.log(role, username, password, keepSignin)
+        navigate('/home')
+        console.log(role, username, password, keepSignin, showpassword)
     }
 
     return (
