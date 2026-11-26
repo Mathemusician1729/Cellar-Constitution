@@ -29,9 +29,11 @@ function App() {
 	        <Route path="/EditItemType/:type_name" element={<EditItemType/>}/>
 	        <Route path="/ItemTypes" element={<ItemTypes/>}/>
           <Route path="/login/:role" element={<Login/>}/>
-          <Route path="/home" element={<HomeLayout/>}> {/* Put dashboard links under this line */}
+          <Route path="/home" element={<HomeLayout/>}> {/* Put dashboard links under this line, make sure routes are the same as routes in Sidebar.jsx */}
             <Route index element={<Home/>}/>
             <Route path='calendar' element={<Calendar/>}/>
+            <Route path='contacts' element={<ContactsListAll/>}/>
+            <Route path='donations' element={<DonationLog/>}/>
           </Route>
 	        {/* <Route path="/Inventory" element={<Inventory/>}/>  */}
         </Routes>
